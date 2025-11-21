@@ -117,14 +117,9 @@ class VisitorsController extends Controller
      */
     public function add()
     {
-        // If form submitted (POST request)
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-
-            // Get Visitors model
             $visitorsTable = $this->getTableLocator()->get('Visitors');
-
-            // Prepare data
             $visitorData = [
                 'visitor_name' => $data['visitor_name'] ?? '',
                 'mobile_number' => $data['mobile_number'] ?? '',
@@ -139,15 +134,10 @@ class VisitorsController extends Controller
                 'visit_time' => $data['visit_time'] ?? '',
                 'status' => 'pending',
             ];
-
-            // Handle photo upload
             if (!empty($data['photo']['name'])) {
-                // Read file as binary
                 $photoData = file_get_contents($data['photo']['tmp_name']);
                 $visitorData['photo'] = $photoData;
             }
-
-            // Save visitor
             if ($visitorsTable->saveNewVisitor($visitorData)) {
                 $this->Flash->success('Visitor added successfully!');
                 return $this->redirect(['action' => 'dashboard']);
@@ -156,11 +146,9 @@ class VisitorsController extends Controller
             }
         }
 
-        // Get visit reasons for dropdown
         $visitReasonsTable = $this->getTableLocator()->get('VisitReasons');
         $visitReasons = $visitReasonsTable->find()->toArray();
 
-        // Pass data to view
         $this->set(compact('visitReasons'));
     }
 

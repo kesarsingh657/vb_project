@@ -26,7 +26,6 @@ class AdminController extends Controller
                 ->where(['username' => $username])
                 ->first();
 
-            // 🔥 Plain password check (no hashing)
             if ($admin && $password === $admin->password) {
 
                 $session = $this->request->getSession();
