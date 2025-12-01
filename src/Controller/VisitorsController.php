@@ -223,6 +223,16 @@ class VisitorsController extends AppController
         try {
             $mailer = new Mailer('default');
             $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . $qrCode;
+           
+             $qrDir = WWW_ROOT . 'img/qrcodes/';
+            if (!file_exists($qrDir)) {
+                mkdir($qrDir, 0777, true);
+            }
+             $qrImageName = $qrCode . '.png';
+            $qrImagePath = $qrDir . $qrImageName;
+            file_put_contents($qrImagePath, file_get_contents($qrUrl));
+            move_uploaded_file($visitor->photo_tmp, WWW_ROOT . 'img/visitors/' . $visitor->photo);
+            
             $content="";
             $content .= "<h3>Visitor Pass</h3>";
             $content .= "<p><strong>Name:</strong> " . $visitor->name . "</p>";
