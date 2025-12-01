@@ -199,7 +199,6 @@ class VisitorsController extends AppController
 
     public function invite()
     {
-        $visitor = $this->Visitors->newEmptyEntity();
         
         if ($this->request->is('post')) {
             $data = $this->request->getData();
@@ -217,7 +216,6 @@ class VisitorsController extends AppController
             $this->Flash->error('Unable to send invitation.');
         }
         
-        $this->set(compact('visitor'));
     }
 
     private function sendQRCodeEmail($visitor, $qrCode)
@@ -225,21 +223,20 @@ class VisitorsController extends AppController
         try {
             $mailer = new Mailer('default');
             $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . $qrCode;
-            
-            $mailer->setFrom(['noreply@visitormanagement.com' => 'Visitor Management'])
-                ->setTo($visitor->email)
+            $content="";
+            $content .= "<h3>Visitor Pass</h3>";
+            $content .= "<p><strong>Name:</strong> " . $visitor->name . "</p>";
+            $content .= "<p><strong>Email:</strong> " . $visitor->email . "</p>";
+            $content .= "<p><strong>Phone:</strong> " . $visitor->phone . "</p>";
+            $content .= "<p><strong>Company:</strong> " . $visitor->company . "</p>";
+            $mailer->setTo($visitor->email)
                 ->setSubject('Your Visitor Pass')
                 ->setEmailFormat('html')
-                ->deliver("
-                    <h3>Your Visit is Confirmed</h3>
-                    <p><strong>Date:</strong> {$visitor->visit_date}</p>
-                    <p><strong>Time:</strong> {$visitor->visit_time}</p>
-                    <p><strong>Host:</strong> {$visitor->host_name}</p>
-                    <br>
-                    <img src='{$qrUrl}' alt='QR Code'>
-                ");
+                ->deliver($content);
         } catch (\Exception $e) {
-            // Email failed
+            echo "<pre>";
+            print_r($e->getMessage());
+            die;
         }
     }
 
