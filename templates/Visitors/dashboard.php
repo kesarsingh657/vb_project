@@ -7,43 +7,11 @@ body {
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 
-/* Sidebar */
-.sidebar {
-    width:250px;
-    background:#dc3545;
-    min-height:100vh;
-    position:fixed;
-    left:0; top:0;
-    padding:20px;
-    color:white;
-}
-.logo { text-align:center; margin-bottom:25px; }
-.logo h2 { font-size:22px; margin:0; }
-.logo small { font-size:12px; opacity:0.8; }
-
-.menu-items { list-style:none; padding:0; margin-top:20px; }
-.menu-items a {
-    color:white;
-    text-decoration:none;
-    padding:10px 12px;
-    display:block;
-    border-radius:5px;
-    margin-bottom:10px;
-    font-size:14px;
-    transition:0.2s;
-}
-.menu-items a:hover,
-.menu-items a.active {
-    background:rgba(255,255,255,0.2);
-}
-
-/* Main content */
 .main-content {
     margin-left:250px;
     padding:20px;
 }
 
-/* Small round icon photo */
 .photo {
     width:35px;
     height:35px;
@@ -56,28 +24,24 @@ body {
     font-size:16px;
     font-weight:600;
 }
+
+.status-badge {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-approved { background: #d4edda; color: #155724; }
+.badge-pending { background: #fff3cd; color: #856404; }
+.badge-rejected { background: #f8d7da; color: #721c24; }
+.badge-checked-in { background: #cfe2ff; color: #084298; }
 </style>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <div class="logo">
-        <h2>🔐 VB</h2>
-        <small>Visitor Mgmt</small>
-    </div>
+<?= $this->element('sidebar') ?>
 
-    <ul class="menu-items">
-        <li><a class="active" href="<?= $this->Url->build(['action'=>'dashboard']) ?>">📊 Dashboard</a></li>
-        <li><a href="<?= $this->Url->build(['action'=>'add']) ?>">👥 New Visitor</a></li>
-        <li><a href="<?= $this->Url->build(['action'=>'invite']) ?>">✉ Invite</a></li>
-        <li><a href="<?= $this->Url->build(['action'=>'reports']) ?>">📈 Reports</a></li>
-        <li><a href="<?= $this->Url->build(['action'=>'settings']) ?>">⚙ Settings</a></li>
-        <li><a href="<?= $this->Url->build(['controller'=>'Admin','action'=>'logout']) ?>">🚪 Logout</a></li>
-    </ul>
-</div>
-
-<!-- MAIN CONTENT -->
 <div class="main-content">
 
     <h3 class="mb-4">Today's Visitors</h3>
@@ -96,9 +60,10 @@ body {
                     <th>Photo</th>
                     <th>Visitor</th>
                     <th>Host</th>
-                    <th>Date</th>
+                    <th>Type</th>
                     <th>Time</th>
-                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Check In/Out</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -134,11 +99,53 @@ body {
                             <small><?= h($v->host_department) ?></small>
                         </td>
 
-                        <td><?= h($v->visit_date) ?></td>
-                        <td><?= h($v->visit_time) ?></td>
-                        <td><?= h($v->visit_reason) ?></td>
+                        <!-- Type -->
+                        <td>
+                            <?php if ($v->visit_type == 'group'): ?>
+                                <span class="badge bg-info">Group (<?= $v->group_size ?>)</span>
+                            <?php else: ?>
+                                <span class="badge bg-secondary">Single</span>
+                            <?php endif; ?>
+                            
+                            <?php if ($v->is_pre_registered): ?>
+                                <br><small class="text-success">✓ Pre-registered</small>
+                            <?php endif; ?>
+                        </td>
 
-                        <!-- Buttons -->
+                        <td><?= h($v->visit_time) ?></td>
+
+                        <!-- Status -->
+                        <td>
+                            <?php
+                                if ($v->host_status == "approved") {
+                                    echo "<span class='status-badge badge-approved'>✓ Approved</span>";
+                                } elseif ($v->host_status == "rejected") {
+                                    echo "<span class='status-badge badge-rejected'>✗ Rejected</span>";
+                                } else {
+                                    echo "<span class='status-badge badge-pending'>⏳ Pending</span>";
+                                }
+                            ?>
+                        </td>
+
+                        <!-- Check In/Out -->
+                        <td>
+                            <?php if ($v->check_in_time && $v->check_out_time): ?>
+                                <small class="text-success">✓ Completed</small><br>
+                                <small><?= date('h:i A', strtotime($v->check_out_time)) ?></small>
+                            <?php elseif ($v->check_in_time): ?>
+                                <span class="status-badge badge-checked-in">Checked In</span><br>
+                                <small><?= date('h:i A', strtotime($v->check_in_time)) ?></small><br>
+                                <?= $this->Html->link('Check Out', ['action'=>'checkOut', $v->id], [
+                                    'class'=>'btn btn-sm btn-warning mt-1'
+                                ]) ?>
+                            <?php else: ?>
+                                <?= $this->Html->link('Check In', ['action'=>'checkIn', $v->id], [
+                                    'class'=>'btn btn-sm btn-success'
+                                ]) ?>
+                            <?php endif; ?>
+                        </td>
+
+                        <!-- Actions -->
                         <td>
                             <?= $this->Html->link('View', ['action'=>'view', $v->id], ['class'=>'btn btn-sm btn-secondary']) ?>
                             <?= $this->Html->link('Edit', ['action'=>'edit', $v->id], ['class'=>'btn btn-sm btn-primary']) ?>
@@ -151,7 +158,7 @@ body {
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
-                <tr><td colspan="7" class="text-center py-3">No visitors today.</td></tr>
+                <tr><td colspan="8" class="text-center py-3">No visitors today.</td></tr>
             <?php endif; ?>
             </tbody>
         </table>
