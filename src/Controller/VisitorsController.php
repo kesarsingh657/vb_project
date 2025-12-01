@@ -202,6 +202,12 @@ class VisitorsController extends AppController
         
         if ($this->request->is('post')) {
             $data = $this->request->getData();
+
+            // echo "<pre>";
+            // print_r($data);
+            // die;
+
+            
             $data['is_pre_registered'] = 1;
             
             $visitor = $this->Visitors->newEntity($data);
@@ -235,10 +241,9 @@ class VisitorsController extends AppController
             
             $content="";
             $content .= "<h3>Visitor Pass</h3>";
-            $content .= "<p><strong>Name:</strong> " . $visitor->name . "</p>";
+            $content .= "<p><strong>Name:</strong> " . $visitor->visitor_name . "</p>";
             $content .= "<p><strong>Email:</strong> " . $visitor->email . "</p>";
-            $content .= "<p><strong>Phone:</strong> " . $visitor->phone . "</p>";
-            $content .= "<p><strong>Company:</strong> " . $visitor->company . "</p>";
+            $content .= "<p><strong>Phone:</strong> " . $visitor->mobile_number . "</p>";
             $mailer->setTo($visitor->email)
                 ->setSubject('Your Visitor Pass')
                 ->setEmailFormat('html')
