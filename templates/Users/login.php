@@ -1,4 +1,3 @@
-<!-- File: templates/Users/login.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +10,7 @@
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f5f5f5;
+            background-color: #f2f2f2;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,27 +18,48 @@
         }
 
         .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
+            background: #ffffff;
+            padding: 30px 35px;
+            border-radius: 8px;
             width: 100%;
-            max-width: 400px;
+            max-width: 350px;
             border-top: 5px solid #dc3545;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.1);
         }
 
-        .login-header { text-align: center; margin-bottom: 25px; }
-        .login-header h1 { color: #dc3545; font-size: 28px; }
-        .login-header p { color: #777; }
+        .login-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
 
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; }
+        .login-header h1 {
+            color: #dc3545;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
 
         .form-group select,
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
+            padding: 10px;
+            border: 1.8px solid #dcdcdc;
             border-radius: 5px;
             font-size: 14px;
         }
@@ -52,29 +72,23 @@
 
         .submit-btn {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: #dc3545;
             color: #fff;
             border: none;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-        }
-        .submit-btn:hover { background: #b91d29; }
-
-        .demo-box {
-            margin-top: 20px;
-            background: #f8f9fa;
-            border-left: 4px solid #dc3545;
-            padding: 12px;
-            border-radius: 5px;
+            margin-top: 5px;
         }
 
-        .demo-box h4 { color: #dc3545; margin-bottom: 10px; font-size: 14px; }
-        .demo-box p { font-size: 13px; margin: 4px 0; }
+        .submit-btn:hover {
+            background: #b3202a;
+        }
 
         .flash-message {
-            padding: 12px;
+            padding: 10px;
             margin-bottom: 15px;
             border-radius: 5px;
             background: #f8d7da;
@@ -90,7 +104,7 @@
 <div class="login-container">
 
     <div class="login-header">
-        <h1>🔐 Login</h1>
+        <h1>Login</h1>
         <p>Visitor Management System</p>
     </div>
 
@@ -104,9 +118,9 @@
             <label for="role">Select Role</label>
             <select name="role" id="role" required onchange="autoFillCredentials()">
                 <option value="">-- Select Role --</option>
-                <option value="admin">👤 Admin</option>
-                <option value="security">🔒 Security</option>
-                <option value="employee">👔 Employee</option>
+                <option value="admin">Admin</option>
+                <option value="security">Security</option>
+                <option value="employee">Employee</option>
             </select>
         </div>
 
@@ -116,7 +130,8 @@
                 'label' => false,
                 'autocomplete' => 'off',
                 'placeholder' => 'Enter your username',
-                'required' => true
+                'required' => true,
+                'id' => 'username'
             ]) ?>
         </div>
 
@@ -126,7 +141,8 @@
                 'label' => false,
                 'autocomplete' => 'off',
                 'placeholder' => 'Enter your password',
-                'required' => true
+                'required' => true,
+                'id' => 'password'
             ]) ?>
         </div>
 
@@ -134,21 +150,13 @@
 
     <?= $this->Form->end() ?>
 
-    <!-- Demo Credential Box -->
-    <div class="demo-box">
-        <h4>Demo Credentials</h4>
-        <p><strong>Admin:</strong> admin / admin</p>
-        <p><strong>Security:</strong> security / security</p>
-        <p><strong>Employee:</strong> employee / employee</p>
-    </div>
-
 </div>
 
 <script>
     function autoFillCredentials() {
         let role = document.getElementById('role').value;
-        document.getElementById("username").value = role ? role : '';
-        document.getElementById("password").value = role ? role : '';
+        document.getElementById("username").value = role || '';
+        document.getElementById("password").value = role || '';
     }
 </script>
 
