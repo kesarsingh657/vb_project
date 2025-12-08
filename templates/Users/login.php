@@ -109,7 +109,7 @@
     </div>
 
     <!-- Flash Messages -->
-    <?= $this->Flash->render() ?>
+    
 
     <!-- Login Form -->
     <?= $this->Form->create(null, ['url' => ['controller' => 'Users', 'action' => 'login']]) ?>
