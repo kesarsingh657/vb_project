@@ -8,8 +8,11 @@ use Cake\ORM\Entity;
 /**
  * VisitorReason Entity
  *
- * @property int|null $id
- * @property string|null $reason_name
+ * @property int $id
+ * @property string $visit_reason
+ * @property \Cake\I18n\DateTime|null $created_on
+ * @property string|null $created_by
+ * @property bool|null $status
  */
 class VisitorReason extends Entity
 {
@@ -23,7 +26,9 @@ class VisitorReason extends Entity
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        'id' => true,
-        'reason_name' => true,
+        'visit_reason' => true,
+        'created_on' => true,
+        'created_by' => true,
+        'status' => true,
     ];
 }

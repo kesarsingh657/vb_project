@@ -2,17 +2,15 @@
 declare(strict_types=1);
 
 /**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- */
-
-/*
+ * CakePHP(tm) : Rapid Development Framework
+ *
  * This file is loaded by your src/Application.php bootstrap method.
  */
 
 require __DIR__ . DIRECTORY_SEPARATOR . 'paths.php';
 
 /*
- * Bootstrap CakePHP
+ * Bootstrap CakePHP core files
  */
 require CORE_PATH . 'config' . DS . 'bootstrap.php';
 
@@ -36,7 +34,7 @@ use function Cake\Core\env;
 require CAKE . 'functions.php';
 
 /*
- * Load app config
+ * Load app configuration
  */
 try {
     Configure::config('default', new PhpConfig());
@@ -45,12 +43,15 @@ try {
     exit($e->getMessage() . "\n");
 }
 
+/*
+ * Load local app config (if exists)
+ */
 if (file_exists(CONFIG . 'app_local.php')) {
     Configure::load('app_local', 'default');
 }
 
 /*
- * Debug Cache configs
+ * Debug cache configuration
  */
 if (Configure::read('debug')) {
     Configure::write('Cache._cake_model_.duration', '+2 minutes');
@@ -83,27 +84,31 @@ if (PHP_SAPI === 'cli') {
 }
 
 /*
- * Base URL
+ * Base URL handling
  */
 $fullBaseUrl = Configure::read('App.fullBaseUrl');
 if (!$fullBaseUrl) {
     $trustProxy = false;
     $s = null;
+
     if (env('HTTPS') || ($trustProxy && env('HTTP_X_FORWARDED_PROTO') === 'https')) {
         $s = 's';
     }
+
     $httpHost = env('HTTP_HOST');
     if ($httpHost) {
         $fullBaseUrl = 'http' . $s . '://' . $httpHost;
     }
 }
+
 if ($fullBaseUrl) {
     Router::fullBaseUrl($fullBaseUrl);
 }
+
 unset($fullBaseUrl);
 
 /*
- * Apply configurations
+ * Apply config values to CakePHP subsystems
  */
 Cache::setConfig(Configure::consume('Cache'));
 ConnectionManager::setConfig(Configure::consume('Datasources'));
@@ -113,19 +118,20 @@ Log::setConfig(Configure::consume('Log'));
 Security::setSalt(Configure::consume('Security.salt'));
 
 /*
- * Device detectors
+ * Device detectors (mobile / tablet)
  */
 ServerRequest::addDetector('mobile', function ($request) {
     $detector = new \Detection\MobileDetect();
     return $detector->isMobile();
 });
+
 ServerRequest::addDetector('tablet', function ($request) {
     $detector = new \Detection\MobileDetect();
     return $detector->isTablet();
 });
 
 /*
- * Debug mode — show full PHP errors (SAFE FIX)
+ * Debug mode — show PHP errors clearly
  */
 if (Configure::read('debug')) {
     ini_set('display_errors', 1);

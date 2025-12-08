@@ -6,14 +6,19 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Admin Entity
+ * VisitorMaster Entity
  *
  * @property int $id
- * @property string|null $username
- * @property string|null $password
+ * @property string $visitor_name
+ * @property string $mobile_number
+ * @property string|null $email
+ * @property string|null $address
+ * @property string|null $company_name
+ * @property string|null $photo
  * @property \Cake\I18n\DateTime|null $created_at
+ * @property \Cake\I18n\DateTime|null $updated_at
  */
-class Admin extends Entity
+class VisitorMaster extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -25,17 +30,13 @@ class Admin extends Entity
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        'username' => true,
-        'password' => true,
+        'visitor_name' => true,
+        'mobile_number' => true,
+        'email' => true,
+        'address' => true,
+        'company_name' => true,
+        'photo' => true,
         'created_at' => true,
-    ];
-
-    /**
-     * Fields that are excluded from JSON versions of the entity.
-     *
-     * @var array<string>
-     */
-    protected array $_hidden = [
-        'password',
+        'updated_at' => true,
     ];
 }
