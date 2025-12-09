@@ -72,7 +72,6 @@ return [
             'username' => 'root',
             'password' => '',
             'database' => 'vms',
-            //'schema' => 'myapp',
             'url' => env('DATABASE_TEST_URL', 'sqlite://127.0.0.1/tmp/tests.sqlite'),
         ],
     ],
