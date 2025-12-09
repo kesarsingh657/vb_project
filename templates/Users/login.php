@@ -153,11 +153,19 @@
 </div>
 
 <script>
-    function autoFillCredentials() {
-        let role = document.getElementById('role').value;
-        document.getElementById("username").value = role || '';
-        document.getElementById("password").value = role || '';
+document.getElementById('role').addEventListener('change', function() {
+    const role = this.value;
+    const credentials = {
+        'admin': {username: 'admin', password: 'admin'},
+        'security': {username: 'security', password: 'admin'},
+        'employee': {username: 'employee', password: 'admin'}
+    };
+    
+    if (credentials[role]) {
+        document.getElementById('username').value = credentials[role].username;
+        document.getElementById('password').value = credentials[role].password;
     }
+});
 </script>
 
 </body>
