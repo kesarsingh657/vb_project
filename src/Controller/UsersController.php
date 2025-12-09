@@ -9,22 +9,74 @@ class UsersController extends AppController
 {
     public function login()
     {
-        // Simple login page - no authentication logic
-        // Just display the login form
-        $this->viewBuilder()->setLayout('login');
+        if ($this->request->is('post')) {
+
+            $username = $this->request->getData('username');
+            $password = $this->request->getData('password');
+            $role     = $this->request->getData('role');
+            $user = $this->Users->find()
+                ->where([
+                    'username'  => $username,
+                    'password'  => $password,
+                    'role'      => $role,
+                    'is_active' => 1
+                ])
+                ->first();
+
+            if ($user) {
+                $this->request->getSession()->write('User', [
+                    'id'       => $user->id,
+                    'username' => $user->username,
+                    'role'     => $user->role,
+                    'email'    => $user->email
+                ]);
+                switch ($user->role) {
+                    case 'admin':
+                        return $this->redirect(['action' => 'adminDashboard']);
+                    case 'security':
+                        return $this->redirect(['action' => 'securityDashboard']);
+                    case 'employee':
+                        return $this->redirect(['action' => 'employeeDashboard']);
+                }
+
+            } else {
+                $this->Flash->error('Invalid username, password or role.');
+            }
+        }
     }
 
     public function logout()
     {
-        // Simple logout redirect
-        $this->Flash->success('You have been logged out.');
-        return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        $this->request->getSession()->destroy();
+        return $this->redirect(['action' => 'login']);
     }
 
-    public function index()
+    public function adminDashboard()
     {
-        $users = $this->Users->find('all');
-        $this->set(compact('users'));
+        $this->checkLogin('admin');
+    }
+
+    public function securityDashboard()
+    {
+        $this->checkLogin('security');
+    }
+
+    public function employeeDashboard()
+    {
+        $this->checkLogin('employee');
+    }
+
+    private function checkLogin($role)
+    {
+        $session = $this->request->getSession();
+
+        if (!$session->check('User')) {
+            return $this->redirect(['action' => 'login']);
+        }
+
+        if ($session->read('User.role') !== $role) {
+            return $this->redirect(['action' => 'login']);
+        }
     }
 
     public function add()
