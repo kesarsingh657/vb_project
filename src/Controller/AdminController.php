@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -9,7 +11,7 @@ class AdminController extends AppController
     {
         parent::initialize();
 
-        // Load models using CakePHP 5 method
+        // Load models
         $this->Visits = $this->fetchTable('Visits');
         $this->VisitorMaster = $this->fetchTable('VisitorMaster');
         $this->Users = $this->fetchTable('Users');
@@ -23,7 +25,7 @@ class AdminController extends AppController
     {
         $user = $this->Authentication->getIdentity();
 
-        if (!$user || $user->role != 'admin') {
+        if (!$user || $user->role !== 'admin') {
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
@@ -43,7 +45,7 @@ class AdminController extends AppController
     {
         $user = $this->Authentication->getIdentity();
 
-        if (!$user || $user->role != 'admin') {
+        if (!$user || $user->role !== 'admin') {
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
@@ -58,7 +60,7 @@ class AdminController extends AppController
     {
         $user = $this->Authentication->getIdentity();
 
-        if (!$user || $user->role != 'admin') {
+        if (!$user || $user->role !== 'admin') {
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
@@ -68,9 +70,9 @@ class AdminController extends AppController
             if ($this->VisitReasons->save($reason)) {
                 $this->Flash->success('Visit reason added!');
                 return $this->redirect(['action' => 'visitReasons']);
-            } else {
-                $this->Flash->error('Unable to save visit reason.');
             }
+
+            $this->Flash->error('Unable to save visit reason.');
         }
 
         $reasons = $this->VisitReasons->find()
@@ -84,7 +86,7 @@ class AdminController extends AppController
     {
         $user = $this->Authentication->getIdentity();
 
-        if (!$user || $user->role != 'admin') {
+        if (!$user || $user->role !== 'admin') {
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
@@ -102,7 +104,7 @@ class AdminController extends AppController
     {
         $user = $this->Authentication->getIdentity();
 
-        if (!$user || $user->role != 'admin') {
+        if (!$user || $user->role !== 'admin') {
             return $this->redirect(['controller' => 'Users', 'action' => 'login']);
         }
 
@@ -115,9 +117,9 @@ class AdminController extends AppController
             if ($this->Users->save($newUser)) {
                 $this->Flash->success('User added!');
                 return $this->redirect(['action' => 'users']);
-            } else {
-                $this->Flash->error('Unable to add user.');
             }
+
+            $this->Flash->error('Unable to add user.');
         }
 
         $allUsers = $this->Users->find()

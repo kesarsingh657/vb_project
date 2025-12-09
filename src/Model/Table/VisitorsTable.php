@@ -8,21 +8,10 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-/**
- * Visitors Model
- *
- * @property \App\Model\Table\ApprovalRequestsTable&\Cake\ORM\Association\HasMany $ApprovalRequests
- * @property \App\Model\Table\VisitorHistoryTable&\Cake\ORM\Association\HasMany $history_records   <-- FIXED
- *
- */
+
 class VisitorsTable extends Table
 {
-    /**
-     * Initialize method
-     *
-     * @param array<string, mixed> $config The configuration for the Table.
-     * @return void
-     */
+    
     public function initialize(array $config): void
     {
         parent::initialize($config);
@@ -42,12 +31,7 @@ class VisitorsTable extends Table
         ]);
     }
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
+    
     public function validationDefault(Validator $validator): Validator
     {
         $validator

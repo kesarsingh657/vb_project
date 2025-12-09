@@ -7,36 +7,40 @@ use Cake\Event\EventInterface;
 
 class UsersController extends AppController
 {
-    public function beforeFilter(EventInterface $event)
-    {
-        parent::beforeFilter($event);
-        $this->Authentication->addUnauthenticatedActions(['login']);
-    }
-
     public function login()
     {
-        $this->request->allowMethod(['get', 'post']);
-        $result = $this->Authentication->getResult();
-
-        if ($this->request->is('post')) {
-            if ($result && $result->isValid()) {
-                $user = $this->Authentication->getIdentity();
-                
-                $redirect = $this->request->getQuery('redirect', [
-                    'controller' => ucfirst($user->role),
-                    'action' => 'dashboard'
-                ]);
-
-                return $this->redirect($redirect);
-            }
-            
-            $this->Flash->error('Invalid username or password. Please try again.');
-        }
+        // Simple login page - no authentication logic
+        // Just display the login form
+        $this->viewBuilder()->setLayout('login');
     }
 
     public function logout()
     {
-        $this->Authentication->logout();
+        // Simple logout redirect
+        $this->Flash->success('You have been logged out.');
         return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+    }
+
+    public function index()
+    {
+        $users = $this->Users->find('all');
+        $this->set(compact('users'));
+    }
+
+    public function add()
+    {
+        $user = $this->Users->newEmptyEntity();
+        
+        if ($this->request->is('post')) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            
+            if ($this->Users->save($user)) {
+                $this->Flash->success('User has been saved.');
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error('Unable to add the user.');
+        }
+        
+        $this->set('user', $user);
     }
 }
