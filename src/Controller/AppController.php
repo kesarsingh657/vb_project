@@ -10,12 +10,11 @@ class AppController extends Controller
     public function initialize(): void
     {
         parent::initialize();
-        
-        $this->loadComponent('Flash');
-    }
 
-    public function beforeFilter(\Cake\Event\EventInterface $event)
-    {
-        parent::beforeFilter($event);
+        // DO NOT load RequestHandler in CakePHP 5
+        // DO NOT load Flash if not necessary
+
+        // You can load Flash only if needed:
+        $this->loadComponent('Flash');
     }
 }

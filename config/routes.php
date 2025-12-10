@@ -1,27 +1,67 @@
 <?php
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
-return static function (RouteBuilder $routes) {
-    $routes->setRouteClass('DashedRoute');
+return function (RouteBuilder $routes): void {
 
-    $routes->scope('/', function (RouteBuilder $builder) {
-        // Home page
+    // Use dashed URLs (example: /add-single)
+    $routes->setRouteClass(DashedRoute::class);
+
+    $routes->scope('/', function (RouteBuilder $builder): void {
+
+        /* -----------------------------------------
+         * DEFAULT ROUTE → Login Page
+         * ----------------------------------------- */
         $builder->connect('/', ['controller' => 'Users', 'action' => 'login']);
-        
-        // Users
-        $builder->connect('/users/login', ['controller' => 'Users', 'action' => 'login']);
-        $builder->connect('/users/logout', ['controller' => 'Users', 'action' => 'logout']);
-        
-        // Admin
-        $builder->connect('/admin/dashboard', ['controller' => 'Admin', 'action' => 'dashboard']);
-        
-        // Security
-        $builder->connect('/security/dashboard', ['controller' => 'Security', 'action' => 'dashboard']);
-        
-        // Employee
-        $builder->connect('/employee/dashboard', ['controller' => 'Employee', 'action' => 'dashboard']);
-        
-        // Fallback routes
+
+        /* -----------------------------------------
+         * VISITOR ROUTES
+         * ----------------------------------------- */
+        $builder->connect('/visitors', ['controller' => 'Visitors', 'action' => 'index']);
+
+        // Add Single Visitor
+        $builder->connect('/visitors/add-single', ['controller' => 'Visitors', 'action' => 'addSingle']);
+
+        // Add Group Visitor
+        $builder->connect('/visitors/add-group', ['controller' => 'Visitors', 'action' => 'addGroup']);
+
+        // View Visitor Details
+        $builder->connect('/visitors/view/:id', 
+            ['controller' => 'Visitors', 'action' => 'view']
+        )->setPass(['id']);
+
+        // Check-in
+        $builder->connect('/visitors/check-in/:id', 
+            ['controller' => 'Visitors', 'action' => 'checkIn']
+        )->setPass(['id']);
+
+        // Check-out
+        $builder->connect('/visitors/check-out/:id', 
+            ['controller' => 'Visitors', 'action' => 'checkOut']
+        )->setPass(['id']);
+
+        // Assign Batch
+        $builder->connect('/visitors/assign-batch', 
+            ['controller' => 'Visitors', 'action' => 'assignBatch']
+        );
+
+        /* -----------------------------------------
+         * DASHBOARD ROUTE
+         * ----------------------------------------- */
+        $builder->connect('/dashboard/admin', 
+            ['controller' => 'Dashboard', 'action' => 'admin']
+        );
+
+        /* -----------------------------------------
+         * INVITE ROUTE
+         * ----------------------------------------- */
+        $builder->connect('/invite', 
+            ['controller' => 'Visitors', 'action' => 'invite']
+        );
+
+        /* -----------------------------------------
+         * FALLBACK ROUTES (auto controller/action)
+         * ----------------------------------------- */
         $builder->fallbacks();
     });
 };
