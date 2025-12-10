@@ -1,20 +1,18 @@
 <?php
 namespace App\Controller;
 
-use Cake\ORM\TableRegistry;
-
 class VisitorsController extends AppController
 {
     public function initialize(): void
     {
         parent::initialize();
 
-        // Load all models using TableRegistry (CakePHP 5 correct way)
-        $this->Visits               = TableRegistry::getTableLocator()->get('Visits');
-        $this->VisitorMasters       = TableRegistry::getTableLocator()->get('VisitorMaster');
-        $this->VisitReasons         = TableRegistry::getTableLocator()->get('VisitReason');
-        $this->VisitorGroupMembers  = TableRegistry::getTableLocator()->get('VisitorGroupMembers');
-        $this->Users                = TableRegistry::getTableLocator()->get('Users');
+        // Load all models using fetchTable (CakePHP 5 best practice)
+        $this->Visits              = $this->fetchTable('Visits');
+        $this->VisitorMasters      = $this->fetchTable('VisitorMaster');
+        $this->VisitReasons        = $this->fetchTable('VisitReason'); // Changed to singular
+        $this->VisitorGroupMembers = $this->fetchTable('VisitorGroupMembers');
+        $this->Users               = $this->fetchTable('Users');
 
         // Sidebar layout for all pages
         $this->viewBuilder()->setLayout('sidebar');
@@ -141,24 +139,23 @@ class VisitorsController extends AppController
      * REPORTS
      * ============================================ */
     public function reports()
-{
-    $from = $this->request->getQuery('from');
-    $to   = $this->request->getQuery('to');
+    {
+        $from = $this->request->getQuery('from');
+        $to   = $this->request->getQuery('to');
 
-    $conditions = [];
+        $conditions = [];
 
-    if ($from) $conditions['visit_date >='] = $from;
-    if ($to)   $conditions['visit_date <='] = $to;
+        if ($from) $conditions['visit_date >='] = $from;
+        if ($to)   $conditions['visit_date <='] = $to;
 
-    $visits = $this->Visits
-        ->find()
-        ->where($conditions)
-        ->order(['visit_date' => 'DESC'])
-        ->all();
+        $visits = $this->Visits
+            ->find()
+            ->where($conditions)
+            ->order(['visit_date' => 'DESC'])
+            ->all();
 
-    $this->set(compact('visits'));
-}
-
+        $this->set(compact('visits'));
+    }
 
     /* ============================================
      * SETTINGS
