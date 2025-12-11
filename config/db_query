@@ -1,0 +1,91 @@
+CREATE DATABASE IF NOT EXISTS vms;
+USE vms;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin','security','employee') NOT NULL,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (username, password, role)
+VALUES ('admin', 'admin123', 'admin');
+
+CREATE TABLE visitor_masters (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    visitor_id VARCHAR(20),
+    visitor_mobile VARCHAR(10),
+    visitor_name VARCHAR(100),
+    visitor_email VARCHAR(100),
+    visitor_address VARCHAR(250),
+    visitor_photo VARCHAR(255),
+    company VARCHAR(150),
+    created_on DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE visit_reasons (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reason VARCHAR(150),
+    status TINYINT DEFAULT 1,
+    created_on DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO visit_reasons (reason) VALUES
+('Client Meeting'),
+('Interview'),
+('Delivery'),
+('Maintenance');
+
+CREATE TABLE visits (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    visitor_master_id INT NULL,
+    visitor_name VARCHAR(150),
+    visitor_mobile VARCHAR(20),
+    visitor_email VARCHAR(150),
+    visitor_address VARCHAR(255),
+    visitor_photo VARCHAR(255),
+    visit_reason VARCHAR(150),
+    host_name VARCHAR(150),
+    host_department VARCHAR(100),
+    host_mobile VARCHAR(20),
+    visit_date DATE,
+    visit_time TIME,
+    group_visit TINYINT DEFAULT 0,
+    group_name VARCHAR(150),
+    checked_in_time DATETIME,
+    checked_out_time DATETIME,
+    host_status ENUM('no_response','approved','rejected') DEFAULT 'no_response',
+    assigned_batch_no VARCHAR(50),
+    is_notification_sent TINYINT DEFAULT 0,
+    created_by VARCHAR(50),
+    created DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE visitor_group_members (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    visit_id INT,
+    name VARCHAR(150),
+    mobile VARCHAR(20),
+    email VARCHAR(150),
+    address VARCHAR(255),
+    created DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE visitor_notification_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    visit_id INT,
+    notification_type VARCHAR(20),
+    is_responded TINYINT DEFAULT 0,
+    status VARCHAR(20),
+    created_on DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE employees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employee_name VARCHAR(100),
+    employee_code VARCHAR(20),
+    department VARCHAR(50),
+    phone VARCHAR(10),
+    email VARCHAR(100)
+);
