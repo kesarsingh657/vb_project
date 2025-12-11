@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use Cake\ORM\TableRegistry;   // <-- REQUIRED IMPORT
+use Cake\ORM\TableRegistry;   
 
 class DashboardController extends AppController
 {
@@ -9,10 +9,10 @@ class DashboardController extends AppController
     {
         parent::initialize();
 
-        // FIX: Load model without loadModel()
+        
         $this->Visits = TableRegistry::getTableLocator()->get('Visits');
 
-        // Set layout
+    
         $this->viewBuilder()->setLayout('sidebar');
     }
 

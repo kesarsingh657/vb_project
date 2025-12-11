@@ -45,7 +45,7 @@
             border: 1px solid #ddd;
         }
 
-        /* 🔥 NEW BUTTONS UI (matches screenshot) */
+        
         .btn-group {
             display: flex;
             gap: 10px;
@@ -136,16 +136,16 @@
 
         <div class="top-section">
 
-            <!-- DATE FILTER -->
+            
             <div>
                 <span class="date-box">From: <input type="date"></span>
                 <span class="date-box">To: <input type="date"></span>
             </div>
 
-            <!-- SEARCH -->
+            
             <input type="text" class="search-input" placeholder="Search Visitor">
 
-            <!-- ✔ NEW & INVITE BUTTONS -->
+            
             <div class="btn-group">
                 <a href="/visitors/add-single"><button class="btn-new">+ New Visitor</button></a>
                 <a href="/invite"><button class="btn-invite">Invite Visitor</button></a>
@@ -168,7 +168,7 @@
                 <th>Action</th>
             </tr>
 
-            <!-- SAMPLE ROW -->
+            
             <tr>
                 <td><div class="visitor-img"></div></td>
                 <td>Amit Kumar<br><small>9990725677</small></td>

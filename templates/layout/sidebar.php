@@ -81,7 +81,7 @@
         Welcome <b><?= $role ?? 'User' ?></b>
     </div>
 
-    <!-- USING YOUR EXACT ROUTES NOW -->
+    
 
     <a href="/dashboard/admin"
        class="menu-item <?= ($current == '/dashboard/admin') ? 'active' : '' ?>">

@@ -4,19 +4,19 @@ use Cake\Routing\RouteBuilder;
 
 return function (RouteBuilder $routes): void {
 
-    // Use dashed URLs (example: /add-single)
+    
     $routes->setRouteClass(DashedRoute::class);
 
     $routes->scope('/', function (RouteBuilder $builder): void {
 
-        /* -----------------------------------------
-         * DEFAULT ROUTE → Login Page
-         * ----------------------------------------- */
+        
+        //DEFAULT ROUTE → Login Page
+        
         $builder->connect('/', ['controller' => 'Users', 'action' => 'login']);
 
-        /* -----------------------------------------
-         * VISITOR ROUTES
-         * ----------------------------------------- */
+        
+        //VISITOR ROUTES
+         
         $builder->connect('/visitors', ['controller' => 'Visitors', 'action' => 'index']);
 
         // Add Single Visitor
@@ -45,23 +45,23 @@ return function (RouteBuilder $routes): void {
             ['controller' => 'Visitors', 'action' => 'assignBatch']
         );
 
-        /* -----------------------------------------
-         * DASHBOARD ROUTE
-         * ----------------------------------------- */
+        
+        //DASHBOARD ROUTE
+        
         $builder->connect('/dashboard/admin', 
             ['controller' => 'Dashboard', 'action' => 'admin']
         );
 
-        /* -----------------------------------------
-         * INVITE ROUTE
-         * ----------------------------------------- */
+        
+        // INVITE ROUTE
+         
         $builder->connect('/invite', 
             ['controller' => 'Visitors', 'action' => 'invite']
         );
 
-        /* -----------------------------------------
-         * FALLBACK ROUTES (auto controller/action)
-         * ----------------------------------------- */
+        
+        //FALLBACK ROUTES (auto controller/action)
+        
         $builder->fallbacks();
     });
 };

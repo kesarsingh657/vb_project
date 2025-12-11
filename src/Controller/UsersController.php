@@ -9,7 +9,7 @@ class UsersController extends AppController
     {
         parent::initialize();
 
-        // FIXED: CakePHP 5 – loadModel removed
+        
         $this->Users = TableRegistry::getTableLocator()->get('Users');
 
         $this->viewBuilder()->setLayout('login');
@@ -23,7 +23,7 @@ class UsersController extends AppController
             $password = $this->request->getData('password');
             $role     = $this->request->getData('role');
 
-            // Since we are NOT using hashed password
+            
             $user = $this->Users
                 ->find()
                 ->where([

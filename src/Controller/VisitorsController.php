@@ -7,33 +7,32 @@ class VisitorsController extends AppController
     {
         parent::initialize();
 
-        // Load all models using fetchTable (CakePHP 5 best practice)
+        
         $this->Visits              = $this->fetchTable('Visits');
         $this->VisitorMasters      = $this->fetchTable('VisitorMaster');
-        $this->VisitReasons        = $this->fetchTable('VisitReason'); // Changed to singular
+        $this->VisitReasons        = $this->fetchTable('VisitReason'); 
         $this->VisitorGroupMembers = $this->fetchTable('VisitorGroupMembers');
         $this->Users               = $this->fetchTable('Users');
 
-        // Sidebar layout for all pages
+        
         $this->viewBuilder()->setLayout('sidebar');
     }
 
-    /* ============================================
-     * DEFAULT → REDIRECT TO DASHBOARD
-     * ============================================ */
+    
+    // DASHBOARD
+    
     public function index()
     {
         return $this->redirect('/dashboard/admin');
     }
 
-    /* ============================================
-     * ADD SINGLE VISITOR
-     * ============================================ */
+    // ADD SINGLE VISITOR
+    
     public function addSingle()
     {
         if ($this->request->is('post')) {
 
-            // Create new visit record
+            
             $visit = $this->Visits->newEmptyEntity();
             $visit = $this->Visits->patchEntity($visit, $this->request->getData());
 
@@ -49,16 +48,15 @@ class VisitorsController extends AppController
         $this->set(compact('reasons'));
     }
 
-    /* ============================================
-     * ADD GROUP VISITOR
-     * ============================================ */
+    // ADD GROUP VISITOR
+    
     public function addGroup()
     {
         if ($this->request->is('post')) {
 
             $data = $this->request->getData();
 
-            // Save main visit record
+            
             $visit = $this->Visits->newEmptyEntity();
             $visit = $this->Visits->patchEntity($visit, $data);
 
@@ -66,7 +64,7 @@ class VisitorsController extends AppController
 
                 $visit_id = $visit->id;
 
-                // Save group members
+                
                 if (!empty($data['group_members'])) {
                     foreach ($data['group_members'] as $m) {
                         if (!empty($m['name'])) {
@@ -91,18 +89,17 @@ class VisitorsController extends AppController
         $this->set(compact('reasons'));
     }
 
-    /* ============================================
-     * VIEW VISITOR DETAILS
-     * ============================================ */
+   
+    
+    
     public function view($id)
     {
         $visit = $this->Visits->get($id);
         $this->set(compact('visit'));
     }
 
-    /* ============================================
-     * INVITE VISITOR
-     * ============================================ */
+   
+    
     public function invite()
     {
         if ($this->request->is('post')) {
@@ -135,9 +132,9 @@ class VisitorsController extends AppController
         $this->set(compact('reasons'));
     }
 
-    /* ============================================
-     * REPORTS
-     * ============================================ */
+    
+    
+    
     public function reports()
     {
         $from = $this->request->getQuery('from');
@@ -157,9 +154,9 @@ class VisitorsController extends AppController
         $this->set(compact('visits'));
     }
 
-    /* ============================================
-     * SETTINGS
-     * ============================================ */
+
+  
+    
     public function settings()
     {
         $user = $this->Users->find()->first();
@@ -168,7 +165,7 @@ class VisitorsController extends AppController
 
             $u = $this->Users->get($user->id);
             $u->username = $this->request->getData('username');
-            $u->password = $this->request->getData('password'); // as per your requirement, NOT hashed
+            $u->password = $this->request->getData('password'); 
 
             $this->Users->save($u);
 

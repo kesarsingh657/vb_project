@@ -54,7 +54,7 @@
         outline: none;
     }
 
-    /* Photo upload block */
+    
     .photo-box {
         width: 160px;
         height: 190px;
@@ -144,7 +144,7 @@
             <input type="text" name="host_department" class="input-box" placeholder="Host Department*" required>
             <input type="text" name="host_mobile" class="input-box" placeholder="Host Mobile*" required>
 
-            <!-- Visit date & time -->
+            
             <input type="date" name="visit_date" class="input-box" required value="<?= date('Y-m-d') ?>">
             <input type="time" name="visit_time" class="input-box" required value="<?= date('H:i') ?>">
 
@@ -152,7 +152,7 @@
 
         <br><br>
 
-        <!-- Photo Upload -->
+        
         <div class="section-title" style="color:#ff4f63;font-weight:bold;margin-bottom:10px;">Visitor Photo</div>
 
         <div class="photo-box" id="previewBox">
@@ -172,7 +172,7 @@
         }
         </script>
 
-        <!-- Buttons -->
+        
         <div class="btn-row">
             <button class="main-btn" type="submit">Create Visit</button>
             <button class="secondary-btn" type="submit" name="save_and_new" value="1">Save & Create New</button>

@@ -7,6 +7,6 @@ class InvitesController extends AppController
     public function index()
     {
         $this->viewBuilder()->setLayout('sidebar');
-        // show create invite page (employee)
+        
     }
 }
